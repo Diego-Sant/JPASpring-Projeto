@@ -1,21 +1,28 @@
 package com.courseproject.projetoJPA.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_user") // Criar tabela no h2-console
 public class User implements Serializable {
 	
+	// Serializable serve para quando precisamos enviar objetos pela rede ou salvar no disco
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // Id do cliente será gerado automaticamente pelo banco de dados
 	private Long id;
 	
 	private String name;
@@ -23,11 +30,20 @@ public class User implements Serializable {
 	private String phone;
 	private String password;
 
+	// (- order | *) significa que um cliente pode ter vários pedidos
+	@JsonIgnore // Arrumar problema de looping
+	@OneToMany(mappedBy = "client") // Um cliente para muitos pedidos
+	private List<Order> orders = new ArrayList<>();
+	
+	// Coleções(List) não precisam de Set, apenas Get para adicionar e remover
+	public List<Order> getOrders() {
+		return orders;
+	}
+	
 	public User() {
 	}
 
 	public User(Long id, String name, String email, String phone, String password) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -77,10 +93,7 @@ public class User implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+		return Objects.hash(email, id);
 	}
 
 	@Override
@@ -92,11 +105,7 @@ public class User implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+		return Objects.equals(email, other.email) && Objects.equals(id, other.id);
 	}
+
 }
