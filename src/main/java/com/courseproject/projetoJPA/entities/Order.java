@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.courseproject.projetoJPA.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
@@ -19,31 +20,46 @@ import jakarta.persistence.Table;
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // Id do pedido será gerado automaticamente pelo banco de dados
 	private Long id;
-	
+
 	// Instant é uma versão melhorada do Date
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
-	
+
+	// Dentro do programa será utilizado o id do status
+	private Integer orderStatus;
+
 	// (- client | 1) significa que o pedido só pode ter 1 cliente
 	@ManyToOne // Muitos pedidos para apenas um cliente
 	@JoinColumn(name = "client_id") // Adicionar id do cliente na tabela
 	private User client;
-	
+
 	public Order() {
 	}
 
-	public Order(Long id, Instant moment, User client) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
 		this.id = id;
 		this.moment = moment;
+		setOrderStatus(orderStatus); // Técnica para utilizar o valor Integer dentro do sistema e String públicamente
 		this.client = client;
 	}
 
 	public Long getId() {
 		return id;
+	}
+
+	// Técnica para utilizar o valor Integer dentro do sistema e String públicamente
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+	
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if (orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();
+		}
 	}
 
 	public void setId(Long id) {
@@ -82,5 +98,5 @@ public class Order implements Serializable {
 		Order other = (Order) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }
