@@ -9,6 +9,7 @@ import java.util.Set;
 import com.courseproject.projetoJPA.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -35,11 +37,15 @@ public class Order implements Serializable {
 
 	// Dentro do programa será utilizado o id do status
 	private Integer orderStatus;
+	
+	//------------------------------------------------------------------
 
 	// (- client | 1) significa que o pedido só pode ter 1 cliente
 	@ManyToOne // Muitos pedidos para apenas um cliente
 	@JoinColumn(name = "client_id") // Adicionar id do cliente na tabela
 	private User client;
+	
+	//------------------------------------------------------------------
 	
 	@OneToMany(mappedBy = "id.order") // Usado id pois é pego no private OrderItemPK id; que pega o private Order order;
 	private Set<OrderItem> items = new HashSet<>();
@@ -47,6 +53,22 @@ public class Order implements Serializable {
 	public Set<OrderItem> getItems() {
 		return items;
 	}
+	
+	//------------------------------------------------------------------
+	
+	// Cascade faz com que o pedido tenha o mesmo id do pagamento
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+	private Payment payment;
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+	
+	//------------------------------------------------------------------
 
 	public Order() {
 	}
@@ -57,10 +79,8 @@ public class Order implements Serializable {
 		setOrderStatus(orderStatus); // Técnica para utilizar o valor Integer dentro do sistema e String públicamente
 		this.client = client;
 	}
-
-	public Long getId() {
-		return id;
-	}
+	
+	//------------------------------------------------------------------
 
 	// Técnica para utilizar o valor Integer dentro do sistema e String públicamente
 	public OrderStatus getOrderStatus() {
@@ -72,7 +92,13 @@ public class Order implements Serializable {
 			this.orderStatus = orderStatus.getCode();
 		}
 	}
+	
+	//------------------------------------------------------------------
 
+	public Long getId() {
+		return id;
+	}
+	
 	public void setId(Long id) {
 		this.id = id;
 	}

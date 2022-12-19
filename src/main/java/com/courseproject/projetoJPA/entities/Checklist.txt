@@ -31,3 +31,7 @@ private Set<Product> products = new HashSet<>(); + getProducts;
 ---- classe pontilhada no meio de uma ligação entre duas classes = criar subpasta .pk e montar a classe com:
 @Embeddable, Serializable, @ManyToOne e @JoinColumn em cima dos atributos, Getters and Setters e HashCode com as duas classes
 Usar a chave primária com o atributo da classe .pk na classe principal entre as duas classes (Ex: OrderItemPK e OrderItem)
+
+order | 1  0..1 | payment = 1 pedido tem 1 pagamento e 1 pagamento tem 1 pedido
+Payment = @OneToOne @MapsId private Order order;
+Order = @OneToOne(mappedBy = "order", cascade = CascadeType.ALL) private Payment payment; + getPayment e setPayment
