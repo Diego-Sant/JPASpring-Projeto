@@ -39,7 +39,6 @@ public class OrderItem implements Serializable {
 		this.price = price;
 	}
 	
-	
 	//Getters and Setters de Order e Product adicionados manualmente
 	@JsonIgnore // É o getOrder que chama o pedido
 	public Order getOrder() {

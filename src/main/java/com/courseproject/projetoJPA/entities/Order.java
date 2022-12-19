@@ -41,7 +41,7 @@ public class Order implements Serializable {
 	@JoinColumn(name = "client_id") // Adicionar id do cliente na tabela
 	private User client;
 	
-	@OneToMany(mappedBy = "id.order") // Usado id pois o order está dentro do id em OrderItem
+	@OneToMany(mappedBy = "id.order") // Usado id pois é pego no private OrderItemPK id; que pega o private Order order;
 	private Set<OrderItem> items = new HashSet<>();
 	
 	public Set<OrderItem> getItems() {
