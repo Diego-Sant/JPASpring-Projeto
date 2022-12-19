@@ -27,3 +27,6 @@ products | *  1..* | categories = Cada produto pode ter várias categorias e cad
 Exemplo: Product - 	@ManyToMany(mappedBy = "products") private Set<Category> categories = new HashSet<>(); + getCategories;
 Category - @ManyToMany @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
 private Set<Product> products = new HashSet<>(); + getProducts;
+
+---- classe pontilhada no meio de uma ligação entre duas classes = criar subpasta .pk e montar a classe com:
+@Embeddable, Serializable, @ManyToOne e @JoinColumn em cima dos atributos, Getters and Setters e HashCode com as duas classes

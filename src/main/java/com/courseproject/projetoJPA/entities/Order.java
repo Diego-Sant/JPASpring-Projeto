@@ -2,7 +2,9 @@ package com.courseproject.projetoJPA.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.courseproject.projetoJPA.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -13,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,6 +40,13 @@ public class Order implements Serializable {
 	@ManyToOne // Muitos pedidos para apenas um cliente
 	@JoinColumn(name = "client_id") // Adicionar id do cliente na tabela
 	private User client;
+	
+	@OneToMany(mappedBy = "id.order") // Usado id pois o order está dentro do id em OrderItem
+	private Set<OrderItem> items = new HashSet<>();
+	
+	public Set<OrderItem> getItems() {
+		return items;
+	}
 
 	public Order() {
 	}
