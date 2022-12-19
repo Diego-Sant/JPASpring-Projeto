@@ -21,8 +21,9 @@ Exemplo: WAITING_PAYMENT, PAID, SHIPPED;
 
 orders | *  1 | client = Um cliente poderá ter vários pedidos
 Exemplo: Order - @ManyToOne private User client; 
-User - @OneToMany(mappedBy = "client") private List<Order> orders = new ArrayList<>();
+User - @JsonIgnore @OneToMany(mappedBy = "client") private List<Order> orders = new ArrayList<>(); + getOrders;
 
-products | *  1..* | categories = Cada produto(pode ser vários) tem várias categorias
-Exemplo: Product - 	private Set<Category> categories = new HashSet<>(); + getCategories;
-Category - 	private Set<Product> products = new HashSet<>(); + getProducts;
+products | *  1..* | categories = Cada produto pode ter várias categorias e cada categoria pode ter vários produtos
+Exemplo: Product - 	@ManyToMany(mappedBy = "products") private Set<Category> categories = new HashSet<>(); + getCategories;
+Category - @ManyToMany @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+private Set<Product> products = new HashSet<>(); + getProducts;

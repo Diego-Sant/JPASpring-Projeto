@@ -5,12 +5,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_category")
@@ -24,8 +26,13 @@ public class Category implements Serializable {
 	private Long id;
 	private String name;
 	
-	@Transient // Usado para o programa não tentar interpretar o código pois ainda não está completo
+	//@Transient Usado para o programa não tentar interpretar o código pois ainda não está completo
+	// O Set é uma interface e não pode ser instanciado, por isso usado HashSet
+	// O Set é uma coleção que garante que um produto não tenha a mesma categoria mais de uma vez
+	@JsonIgnore // Arrumar problema de looping do ManyToMany
+	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
+	// Usado HashSet para garantir que a categoria não inicie como nula, precisa estar vazia porém instanciada;
 	
 	public Set<Product> getProducts() {
 		return products;
