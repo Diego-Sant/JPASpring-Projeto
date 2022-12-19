@@ -19,6 +19,7 @@ import jakarta.persistence.Table;
 @Table(name = "tb_order")
 public class Order implements Serializable {
 
+	// Serializable serve para quando precisamos enviar objetos pela rede ou salvar no disco
 	private static final long serialVersionUID = 1L;
 
 	@Id

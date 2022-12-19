@@ -1,0 +1,12 @@
+Basic Attributes - private String/Integer/Instant/Double/Long example;
+
+Associations - 
+
+Constructors - public Name() {}
+Num2 = public Name(Long id, String name) { this.id = id; this.name = name; }
+
+Getters & Setters(Collections(List): Only get) - Num3 = SetExample, GetExample
+
+HashCode & Equals - Num5 = Função de comparar e não deixar repetir o atributo escolhido
+
+Serializable - implements Serializable, private static final long serialVersionUID = 1L;
