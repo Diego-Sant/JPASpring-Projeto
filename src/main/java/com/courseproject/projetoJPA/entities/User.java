@@ -31,8 +31,8 @@ public class User implements Serializable {
 	private String password;
 
 	// (- order | *) significa que um cliente pode ter vários pedidos
-	@JsonIgnore // Arrumar problema de looping
-	@OneToMany(mappedBy = "client") // Um cliente para muitos pedidos
+	@JsonIgnore // Arrumar problema de looping do OneToMany e ManyToOne
+	@OneToMany(mappedBy = "client") // Um cliente para muitos pedidos - "client" é o atributo usado no ManyToOne
 	private List<Order> orders = new ArrayList<>();
 	
 	// Coleções(List) não precisam de Set, apenas Get para adicionar e remover

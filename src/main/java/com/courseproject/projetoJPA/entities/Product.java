@@ -13,30 +13,41 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 @Entity
-@Table(name = "tb_category")
-public class Category implements Serializable {
-	
+@Table(name = "tb_product")
+public class Product implements Serializable {
+
 	// Serializable serve para quando precisamos enviar objetos pela rede ou salvar no disco
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // Id do cliente será gerado automaticamente pelo banco de dados
 	private Long id;
+	
 	private String name;
+	private String description;
+	private Double price;
+	private String imgUrl;
 	
+	// O Set é uma interface e não pode ser instanciado, por isso usado HashSet
+	// O Set é uma coleção que garante que um produto não tenha a mesma categoria mais de uma vez
 	@Transient // Usado para o programa não tentar interpretar o código pois ainda não está completo
-	private Set<Product> products = new HashSet<>();
-	
-	public Set<Product> getProducts() {
-		return products;
+	private Set<Category> categories = new HashSet<>();
+	// Usado HashSet para garantir que a categoria não inicie como nula, precisa estar vazia porém instanciada;
+
+	public Set<Category> getCategories() {
+		return categories;
 	}
 	
-	public Category() {
+	public Product() {
 	}
 
-	public Category(Long id, String name) {
+	// Não se usa coleções em construtores
+	public Product(Long id, String name, String description, Double price, String imgUrl) {
 		this.id = id;
 		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.imgUrl = imgUrl;
 	}
 
 	public Long getId() {
@@ -55,6 +66,30 @@ public class Category implements Serializable {
 		this.name = name;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -68,7 +103,7 @@ public class Category implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Category other = (Category) obj;
+		Product other = (Product) obj;
 		return Objects.equals(id, other.id);
 	}
 	
