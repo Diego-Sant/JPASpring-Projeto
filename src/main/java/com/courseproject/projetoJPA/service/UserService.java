@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.courseproject.projetoJPA.entities.User;
 import com.courseproject.projetoJPA.repositories.UserRepository;
+import com.courseproject.projetoJPA.service.exceptions.DatabaseException;
 import com.courseproject.projetoJPA.service.exceptions.ResourceNotFoundException;
 
 @Service
@@ -34,7 +37,14 @@ public class UserService {
 	
 	// Deletar um usuário - Usado em UserResource
 	public void delete(Long id) {
+		try {
 		repository.deleteById(id);
+		} 
+		catch (EmptyResultDataAccessException e) { // Excessão quando coloca um Id que não existe
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) { // Excessão quando tenta deletar um usuário com pedidos realizados
+			throw new DatabaseException(e.getMessage());
+		}
 	}
 	
 	// Atualizar informações do usuário - Usado em UserResource
