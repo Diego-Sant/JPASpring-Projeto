@@ -35,5 +35,19 @@ public class UserService {
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
+	
+	// Atualizar informações do usuário - Usado em UserResource
+	public User update(Long id, User obj) {
+		User entity = repository.getReferenceById(id); // Ao em vez do FindById que busca o Id e já trás para o usuário, o ReferenceById apenas monitora
+		updateDate(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateDate(User entity, User obj) {
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());
+		entity.setPassword(obj.getPassword());
+	}
 
 }
