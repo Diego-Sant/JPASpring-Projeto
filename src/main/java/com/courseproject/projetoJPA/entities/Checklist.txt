@@ -38,7 +38,7 @@ Order = @OneToOne(mappedBy = "order", cascade = CascadeType.ALL) private Payment
 
 ---------------------------------------------------------------------------------------------------------------------
 
-Postman configurações para POST
+Postman configurações
 Headers = Key(Content-Type), Value(application/json)
 Body = raw - JSON
 
