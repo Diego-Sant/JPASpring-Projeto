@@ -11,7 +11,7 @@ HashCode & Equals - Num5 = Função de comparar e não deixar repetir o atributo
 
 Serializable - implements Serializable, private static final long serialVersionUID = 1L;
 
-
+---------------------------------------------------------------------------------------------------------------------
 
 <<pk>> = Primary key, as tabelas possuirão a mesma chave primária;
 Exemplo: <<pk>> id: Integer = private Long id;
@@ -35,3 +35,15 @@ Usar a chave primária com o atributo da classe .pk na classe principal entre as
 order | 1  0..1 | payment = 1 pedido tem 1 pagamento e 1 pagamento tem 1 pedido
 Payment = @OneToOne @MapsId private Order order;
 Order = @OneToOne(mappedBy = "order", cascade = CascadeType.ALL) private Payment payment; + getPayment e setPayment
+
+---------------------------------------------------------------------------------------------------------------------
+
+Postman configurações para POST
+Headers = Key(Content-Type), Value(application/json)
+Body = raw - JSON
+
+pom.xml caso o h2-console não tenha permissão
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-devtools</artifactId>
+</dependency>
