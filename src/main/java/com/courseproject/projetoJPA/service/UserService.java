@@ -13,6 +13,8 @@ import com.courseproject.projetoJPA.repositories.UserRepository;
 import com.courseproject.projetoJPA.service.exceptions.DatabaseException;
 import com.courseproject.projetoJPA.service.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class UserService {
 	
@@ -38,7 +40,7 @@ public class UserService {
 	// Deletar um usuário - Usado em UserResource
 	public void delete(Long id) {
 		try {
-		repository.deleteById(id);
+			repository.deleteById(id);
 		} 
 		catch (EmptyResultDataAccessException e) { // Excessão quando coloca um Id que não existe
 			throw new ResourceNotFoundException(id);
@@ -49,9 +51,14 @@ public class UserService {
 	
 	// Atualizar informações do usuário - Usado em UserResource
 	public User update(Long id, User obj) {
-		User entity = repository.getReferenceById(id); // Ao em vez do FindById que busca o Id e já trás para o usuário, o ReferenceById apenas monitora
-		updateDate(entity, obj);
-		return repository.save(entity);
+		try {
+			User entity = repository.getReferenceById(id); // Ao em vez do FindById que busca o Id e já trás para o usuário, o ReferenceById apenas monitora
+			updateDate(entity, obj);
+			return repository.save(entity);
+		}
+		catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateDate(User entity, User obj) {
