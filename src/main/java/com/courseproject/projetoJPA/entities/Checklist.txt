@@ -47,3 +47,45 @@ pom.xml caso o h2-console não tenha permissão
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-devtools</artifactId>
 </dependency>
+
+download MongoDB
+Criar data/db no C:
+Escrever variáveis de ambiente no windows
+Ir em path, depois editar
+Clicar em novo e colocar o caminho C:\Program Files\MongoDB\Server\{versão}\bin
+Ir no cmd e escrever mongod
+
+Adicionar manualmente no MongoDB
+ADD DATA -> Insert Document -> = -> + (Add field after)
+
+Instalar JavaFX
+Baixar SceneBuilder e lembrar o caminho da pasta
+Baixar Javafx-sdk-17 = https://download2.gluonhq.com/openjfx/17/openjfx-17_windows-x64_bin-sdk.zip
+Colar em uma pasta C:/java-libs
+Help -> Install new software -> Work with -> http://download.eclipse.org/efxclipse/updates-released/3.4.1/site/ -> Install
+Window -> Preferences -> JavaFX -> C:\Users\Diego Santana\AppData\Local\SceneBuilder\SceneBuilder.exe
+Window -> Preferences -> Java -> Build Path -> User Libraries -> New(JavaFX) -> Add External JARs... -> C:/java-libs/lib/
+File -> New -> Project -> JavaFX -> Next -> User Library -> JavaFX
+
+Botão direito no projeto -> Run As -> Run Configuration -> Arguments -> VM Arguments -> 
+--module-path C:\java-libs\javafx-sdk\lib --add-modules=javafx.fxml,javafx.controls
+
+Criar arquivo FXML = Botão direito no src -> New -> Package -> gui
+Botão direito no gui -> New -> Other -> JavaFX -> New FXML Project
+Botão direito no gui -> Open With Scene Builder
+
+Associar ViewController.java ao Scene Builder = Controller -> Controller class
+Associar ação à classe = Clicar na classe -> Code -> fx:id
+
+Conectar Main ao FXML
+	@Override
+	public void start(Stage stage) {
+		try {
+			Parent parent = FXMLLoader.load(getClass().getResource("/gui/View.fxml"));
+			Scene scene = new Scene(parent);
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
